@@ -150,7 +150,7 @@ class PluginManager:
             plugin_count = -1
             for other_plugin_name in self._plugins:
                 other_count = re.match(
-                    plugin_type + "_(\d+)", other_plugin_name, re.IGNORECASE
+                    r"{plugin_type}_(\d+)", other_plugin_name, re.IGNORECASE
                 )
                 if other_count is not None:
                     plugin_count = max(plugin_count, int(other_count.group(1)))
