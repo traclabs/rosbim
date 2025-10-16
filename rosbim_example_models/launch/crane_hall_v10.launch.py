@@ -85,10 +85,10 @@ def launch_setup(context, *args, **kwargs):
     return [
         rosbim_manager,
         spawner_export_geometries,
-#        spawner_export_map,
-#        map_server,
-#        rviz2,
-#        map_server_trans_event,
+        spawner_export_map,
+        map_server,
+        rviz2,
+        map_server_trans_event,
     ]
 
 
@@ -96,7 +96,7 @@ def generate_launch_description():
 
     resource_dir = get_package_share_directory("rosbim_example_models")
     bim_file = os.path.join(resource_dir, "models/crane_hall_v10.ifc")
-    rviz_file = os.path.join(resource_dir, "config/rosbim.rviz")
+    rviz_file = os.path.join(resource_dir, "rviz/rosbim.rviz")
     
     return LaunchDescription(
         [

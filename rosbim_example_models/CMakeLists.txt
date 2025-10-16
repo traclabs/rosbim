@@ -4,7 +4,7 @@ project(rosbim_example_models)
 find_package(ament_cmake REQUIRED)
 
 
-install(DIRECTORY launch config models
+install(DIRECTORY launch config models rviz
   DESTINATION share/${PROJECT_NAME})
 
 
