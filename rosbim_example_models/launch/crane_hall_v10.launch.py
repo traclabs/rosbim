@@ -83,11 +83,11 @@ def launch_setup(context, *args, **kwargs):
     )
 
     return [
-#        rosbim_manager,
-#        spawner_export_geometries,
+        rosbim_manager,
+        spawner_export_geometries,
 #        spawner_export_map,
 #        map_server,
-        rviz2,
+#        rviz2,
 #        map_server_trans_event,
     ]
 
