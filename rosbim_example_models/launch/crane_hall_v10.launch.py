@@ -6,7 +6,7 @@ from launch.substitutions import LaunchConfiguration
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch_ros.actions import Node
 from launch.actions import TimerAction
-from ament_index_python.packages import get_package_share_path
+from ament_index_python.packages import get_package_share_path, get_package_share_directory
 from lifecycle_msgs.msg import Transition, State
 from launch.actions import EmitEvent
 from launch.actions import EmitEvent
@@ -17,7 +17,6 @@ from launch_ros.actions import LifecycleNode
 from launch_ros.events.lifecycle import ChangeState
 from launch_ros.event_handlers import OnStateTransition
 import lifecycle_msgs.msg
-
 
 def launch_setup(context, *args, **kwargs):
     log_level = LaunchConfiguration("log_level").perform(context)
@@ -84,16 +83,21 @@ def launch_setup(context, *args, **kwargs):
     )
 
     return [
-        rosbim_manager,
-        spawner_export_geometries,
-        spawner_export_map,
-        map_server,
+#        rosbim_manager,
+#        spawner_export_geometries,
+#        spawner_export_map,
+#        map_server,
         rviz2,
-        map_server_trans_event,
+#        map_server_trans_event,
     ]
 
 
 def generate_launch_description():
+
+    resource_dir = get_package_share_directory("rosbim_example_models")
+    bim_file = os.path.join(resource_dir, "models/crane_hall_v10.ifc")
+    rviz_file = os.path.join(resource_dir, "config/rosbim.rviz")
+    
     return LaunchDescription(
         [
             DeclareLaunchArgument(
@@ -103,12 +107,12 @@ def generate_launch_description():
             ),
             DeclareLaunchArgument(
                 "bim_file",
-                default_value="/rosbim/src/rosbim_example_models/models/crane_hall_v10.ifc",
+                default_value=bim_file,
                 description="Absolute path of the bim file",
             ),
             DeclareLaunchArgument(
                 "rviz_file",
-                default_value="/rosbim/src/rosbim_example_models/config/rosbim.rviz",
+                default_value=rviz_file,
                 description="Rviz GUI to load.",
             ),
             OpaqueFunction(function=launch_setup),

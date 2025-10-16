@@ -61,70 +61,56 @@ RUN apt-get -y update && \
 
 RUN apt-get -y update && \
     cd / && \
-    git clone --depth=1 -b 24_04 https://github.com/traclabs/OpenCOLLADA.git && \
+    git clone --depth=1 -b 24_04 https://github.com/traclabs/OpenCOLLADA.git &&  \
     cd OpenCOLLADA && \
     mkdir build && \
     cd build && \
-    cmake .. && \
+    cmake .. -DUSE_STATIC=ON -DUSE_SHARED=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON && \
     make -j$(nproc) && \
     make -j$(nproc) install
 
-#RUN apt-get -y update && \
-#    cd / && \
-#    git clone --depth=1 --recursive https://github.com/IfcOpenShell/IfcOpenShell && \
-#    cd IfcOpenShell && \
-#    git submodule init && \
-#    git submodule update && \
-#    mkdir build && \
-#    cd build && \
-#    cmake ../cmake -DOCC_INCLUDE_DIR=/usr/local/include/opencascade \
-#    -DOCC_LIBRARY_DIR=/usr/local/lib \
-#    -DOPENCOLLADA_INCLUDE_DIR="/usr/local/include/opencollada" \
-#    -DOPENCOLLADA_LIBRARY_DIR="/usr/local/lib/opencollada"  \
-#    -DPCRE_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu \
-#    -DCGAL_INCLUDE_DIR=/usr/include \
-#    -DGMP_INCLUDE_DIR=/usr/include \
-#    -DMPFR_INCLUDE_DIR=/usr/include \
-#    -DGMP_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu \
-#    -DMPFR_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu \
-#    -DHDF5_SUPPORT=Off && \
-#    make -j8 && \
-#    make -j8 install
+RUN apt-get -y update && \
+    cd / && \
+    git clone --depth=1 --recursive https://github.com/IfcOpenShell/IfcOpenShell && \
+    cd IfcOpenShell && \
+    git submodule init && \
+    git submodule update && \
+    mkdir build && \
+    cd build && \
+    cmake ../cmake -DOCC_INCLUDE_DIR=/usr/local/include/opencascade \
+    -DOCC_LIBRARY_DIR=/usr/local/lib \
+    -DOPENCOLLADA_INCLUDE_DIR="/usr/local/include/opencollada" \
+    -DOPENCOLLADA_LIBRARY_DIR="/usr/local/lib/opencollada"  \
+    -DPCRE_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu \
+    -DCGAL_INCLUDE_DIR=/usr/include \
+    -DGMP_INCLUDE_DIR=/usr/include \
+    -DMPFR_INCLUDE_DIR=/usr/include \
+    -DGMP_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu \
+    -DMPFR_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu \
+    -DHDF5_SUPPORT=Off \
+    -DSWIG_DIR=/usr/local/share/swig/4.3.0 \
+    -DSWIG_EXECUTABLE=/usr/local/bin/swig && \
+    make -j8 && \
+    make -j8 install
 
-#RUN apt-get -y update && apt-get -y install \
-#    checkinstall \
-#    git \
-#    libboost-dev \
-#    libdw-dev \
-#    libqt5svg5-dev \
-#    libzmq3-dev 
-
-#RUN apt-get -y update && apt-get -y install \
-#    python3-osrf-pycommon \
-#    python3-vcstool \
-#    python3-wrapt \
-#    qtbase5-dev \
-#    python3-pyqt5 \
-#    python3-yaml \
-#    python-is-python3 
 
 # Installation of several general ROS packages
-#RUN apt-get -y update && apt-get -y install \
-#    checkinstall \
-#    git \
-#    libboost-dev \
-#    libdw-dev \
-#    libqt5svg5-dev \
-#    libzmq3-dev 
+RUN apt-get -y update && apt-get -y install \
+    checkinstall \
+    git \
+    libboost-dev \
+    libdw-dev \
+    libqt5svg5-dev \
+    libzmq3-dev 
 
-#RUN apt-get -y update && apt-get -y install \
-#    python3-osrf-pycommon \
-#    python3-vcstool \
-#    python3-wrapt \
-#    qtbase5-dev \
-#    python3-pyqt5 \
-#    python3-yaml \
-#    python-is-python3 \
-#    terminator 
+RUN apt-get -y update && apt-get -y install \
+    python3-osrf-pycommon \
+    python3-vcstool \
+    python3-wrapt \
+    qtbase5-dev \
+    python3-pyqt5 \
+    python3-yaml \
+    python-is-python3 \
+    terminator 
 
 ENV DEBIAN_FRONTEND=interactive
