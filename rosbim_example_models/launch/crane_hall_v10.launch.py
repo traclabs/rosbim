@@ -95,7 +95,7 @@ def launch_setup(context, *args, **kwargs):
 def generate_launch_description():
 
     resource_dir = get_package_share_directory("rosbim_example_models")
-    bim_file = os.path.join(resource_dir, "models/crane_hall_v10.ifc")
+    bim_file = os.path.join(resource_dir, "models/Crane_Hall_CONCERT_movable_wall.ifc")
     rviz_file = os.path.join(resource_dir, "rviz/rosbim.rviz")
     
     return LaunchDescription(

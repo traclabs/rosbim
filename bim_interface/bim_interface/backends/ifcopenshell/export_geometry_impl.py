@@ -94,6 +94,8 @@ class ExportGeometry:
         if self._ifc_model is None:
             return None
 
+        ifc_model_schema = self._ifc_model.schema # Default was IFC2X3
+
         # Filter products or export all products
         products = self._ifc_model.by_type("IfcProduct")
 
@@ -131,7 +133,7 @@ class ExportGeometry:
         if is_export_separately:
             for p in products:  # Variable name p is connected to filter
                 if eval(modified_filter):
-                    extracted_ifc = ifcopenshell.file(schema="IFC2X3")
+                    extracted_ifc = ifcopenshell.file(schema=ifc_model_schema)
                     extracted_ifc.add(p)
 
                     matrix = ifcopenshell.util.placement.get_local_placement(
@@ -190,7 +192,7 @@ class ExportGeometry:
                     file_paths.append(file_path)
 
         else:
-            extracted_ifc = ifcopenshell.file(schema="IFC2X3")
+            extracted_ifc = ifcopenshell.file(schema=ifc_model_schema)
             for p in products:
                 if eval(modified_filter):
                     extracted_ifc.add(p)
