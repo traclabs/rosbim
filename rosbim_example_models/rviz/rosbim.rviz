@@ -56,7 +56,7 @@ Visualization Manager:
       Filter: ""
       Name: RosbimDisplay
       Reference Frame: map
-      Scale: 0.0010000000474974513
+      Scale: 1
       Service: /export_geometry_plugin_node/export_geometry
       Value: true
     - Alpha: 0.699999988079071
