@@ -133,7 +133,7 @@ class ExportGeometry:
         if is_export_separately:
             for p in products:  # Variable name p is connected to filter
                 if eval(modified_filter):
-                    extracted_ifc = ifcopenshell.file(schema=ifc_model_schema)
+                    extracted_ifc = self.create_mini_ifc_with_context(self._ifc_model)
                     extracted_ifc.add(p)
 
                     matrix = ifcopenshell.util.placement.get_local_placement(
@@ -192,7 +192,7 @@ class ExportGeometry:
                     file_paths.append(file_path)
 
         else:
-            extracted_ifc = ifcopenshell.file(schema=ifc_model_schema)
+            extracted_ifc = self.create_mini_ifc_with_context(self._ifc_model)
             for p in products:
                 if eval(modified_filter):
                     extracted_ifc.add(p)
@@ -202,6 +202,25 @@ class ExportGeometry:
             file_paths.append(file_path)
 
         return file_paths
+
+    @staticmethod
+    def create_mini_ifc_with_context(src_ifc):
+        """Create a new IFC file containing project context."""
+        schema = src_ifc.schema
+        mini_ifc = ifcopenshell.file(schema=schema)
+
+        # Copy project (contains unit + representation context references)
+        project = src_ifc.by_type("IfcProject")[0]
+        mini_ifc.add(project)
+
+        # Copy units and representation contexts
+        for u in src_ifc.by_type("IfcUnitAssignment"):
+            mini_ifc.add(u)
+        for ctx in src_ifc.by_type("IfcGeometricRepresentationContext"):
+            mini_ifc.add(ctx)
+        for subctx in src_ifc.by_type("IfcGeometricRepresentationSubContext"):
+            mini_ifc.add(subctx)
+        return mini_ifc
 
     @staticmethod
     def _save_geometry(
