@@ -173,7 +173,7 @@ class ExportGeometry:
 
                     """
           ###### needed for clear paper
-           
+
           marker_positions = []
           marker_positions.append(position_x)
           marker_positions.append(position_y)
@@ -189,7 +189,8 @@ class ExportGeometry:
                     file_path = self._save_geometry(
                         extracted_ifc, export_dir, str(p.id()), export_format
                     )
-                    file_paths.append(file_path)
+                    if file_path is not None:
+                        file_paths.append(file_path)
 
         else:
             extracted_ifc = self.create_mini_ifc_with_context(self._ifc_model)
@@ -199,7 +200,8 @@ class ExportGeometry:
             file_path = self._save_geometry(
                 extracted_ifc, export_dir, export_file_name, export_format
             )
-            file_paths.append(file_path)
+            if file_path is not None:
+                file_paths.append(file_path)
 
         return file_paths
 
@@ -254,18 +256,26 @@ class ExportGeometry:
             extracted_ifc_name = str(Path(extracted_ifc_path).name)
             # Call IfcConvert: -y for overwriting old files automatically
             # cwd due to bug with mounting in Docker https://github.com/bimspot/xeokit-converter/issues/2
-            subprocess.run(
-                ["IfcConvert", extracted_ifc_name, extracted_dae_path, "-y"],
-                check=True,
-                cwd=extracted_ifc_dir,
-            )
+            try:
+                subprocess.run(
+                    ["IfcConvert", extracted_ifc_name, extracted_dae_path, "-y"],
+                    check=True,
+                    cwd=extracted_ifc_dir,
+                )
+            except subprocess.CalledProcessError as e:
+                print(f"Error, but proceeding anyway: {e}")
+                return None
             return extracted_dae_path
         else:
             extracted_obj_path = str(Path(extracted_ifc_path).with_suffix(".obj"))
             # Call IfcConvert: -y for overwriting old files automatically
-            subprocess.run(
-                ["IfcConvert", extracted_ifc_path, extracted_obj_path, "-y"], check=True
-            )
+            try:
+                subprocess.run(
+                    ["IfcConvert", extracted_ifc_path, extracted_obj_path, "-y"], check=True
+                )
+            except subprocess.CalledProcessError as e:
+                print(f"Error, but proceeding anyway: {e}")
+                return None
 
             if export_format == MeshFormat.OBJ:
                 return extracted_obj_path
