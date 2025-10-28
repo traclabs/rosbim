@@ -9,7 +9,7 @@
 
   <license>Apache-2.0</license>
 
-  <buildtool_depend>colcon</buildtool_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
   <exec_depend>python3-rospkg</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>bim_interface</exec_depend>
@@ -21,6 +21,6 @@
   <exec_depend>rqt_rosbim_manager</exec_depend>
 
   <export>
-    <metapackage />
+    <build_type>ament_cmake</build_type>
   </export>
 </package>
